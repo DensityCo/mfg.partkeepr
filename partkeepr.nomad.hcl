@@ -1,7 +1,6 @@
 job "partkeepr" {
   datacenters = [
-    "production-us-east-1",
-    "lab-us-east-1",
+    "factory-us-east-1",
     "dc1" # local development
   ]
 
@@ -60,7 +59,7 @@ job "partkeepr" {
         check {
           type     = "http"
           port     = "http"
-          path     = "/"
+          path     = "/setup/"
           interval = "10s"
           timeout  = "9s"
         }
