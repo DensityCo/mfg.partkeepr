@@ -14,7 +14,6 @@ dev:
 	docker-compose up
 
 
-
 # ----------------------------------------------------------
 # build and ship
 
@@ -46,39 +45,7 @@ deploy/staging:
 	.circleci/send.sh
 deploy-staging: deploy/staging
 
-deploy/production:
-	$(call check_var, tag, required to render this template)
-	ENVIRON=factory-us-east-1 \
-	SERVICE_NAME=partkeepr \
-	DOCKER_IMAGE="$(namespace)/$(image):$(tag)" \
-  COUNT=1 \
-	.circleci/send.sh
-deploy-production: deploy/production
-
-# https://stackoverflow.com/a/649462/4115328
-# define NGINX_STAGING_BUILD_TLD
-# server {
-# 	listen 80;
-# 	server_name partkeepr.density.build;
-# 	location / {
-# 		proxy_pass https://staging-us-east-1.density.io;
-# 		proxy_next_upstream error timeout invalid_header http_500 http_503 http_504;
-# 		proxy_redirect off;
-# 		proxy_set_header Host partkeepr-staging.density.io;
-# 		proxy_set_header X-Forwarded-Proto $$http_x_forwarded_proto;
-# 		proxy_set_header X-Real-IP $$remote_addr;
-# 		proxy_set_header X-Forwarded-For $$proxy_add_x_forwarded_for;
-# 		proxy_http_version 1.1;
-# 		proxy_set_header Connection "";
-# 		proxy_set_header X-Request-ID $$request_trace_id;
-# 		proxy_send_timeout 120s;
-# 		client_max_body_size 100m;
-# 	}
-# }
-# endef
-# export NGINX_STAGING_BUILD_TLD
-
-deploy/lab/consul-keys:
+deploy/staging/consul-keys:
 	density ssh --pick-first \
 		--exec "consul kv put partkeepr-staging/partkeepr_database_host $(PARTKEEPR_DATABASE_HOST)" \
 		factory-us-east-1-cluster-worker
@@ -97,12 +64,37 @@ deploy/lab/consul-keys:
 	density ssh --pick-first \
 		--exec "consul kv put partkeepr-staging/partkeepr_oktopart_apikey $(PARTKEEPR_OKTOPART_APIKEY)" \
 		factory-us-east-1-cluster-worker
-deploy-lab-env: deploy/lab/consul-keys
-#
-# teardown-lab-env:
-# 	density ssh --pick-first \
-# 		--exec "consul kv delete nginx/http_configs/partkeepr-staging" \
-# 		lab-us-east-1-cluster-worker
+deploy-staging-env: deploy/staging/consul-keys
+
+deploy/production:
+	$(call check_var, tag, required to render this template)
+	ENVIRON=factory-us-east-1 \
+	SERVICE_NAME=partkeepr \
+	DOCKER_IMAGE="$(namespace)/$(image):$(tag)" \
+  COUNT=1 \
+	.circleci/send.sh
+deploy-production: deploy/production
+
+deploy/production/consul-keys:
+	density ssh --pick-first \
+		--exec "consul kv put partkeepr/partkeepr_database_host $(PARTKEEPR_DATABASE_HOST)" \
+		factory-us-east-1-cluster-worker
+	density ssh --pick-first \
+		--exec "consul kv put partkeepr/partkeepr_database_name $(PARTKEEPR_DATABASE_NAME)" \
+		factory-us-east-1-cluster-worker
+	density ssh --pick-first \
+		--exec "consul kv put partkeepr/partkeepr_database_port $(PARTKEEPR_DATABASE_PORT)" \
+		factory-us-east-1-cluster-worker
+	density ssh --pick-first \
+		--exec "consul kv put partkeepr/partkeepr_database_user $(PARTKEEPR_DATABASE_USER)" \
+		factory-us-east-1-cluster-worker
+	density ssh --pick-first \
+		--exec "consul kv put partkeepr/partkeepr_database_pass $(PARTKEEPR_DATABASE_PASS)" \
+		factory-us-east-1-cluster-worker
+	density ssh --pick-first \
+		--exec "consul kv put partkeepr/partkeepr_oktopart_apikey $(PARTKEEPR_OKTOPART_APIKEY)" \
+		factory-us-east-1-cluster-worker
+deploy-production-env: deploy/production/consul-keys
 
 
 # ----------------------------------------------------------

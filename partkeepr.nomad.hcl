@@ -1,4 +1,4 @@
-job "partkeepr" {
+job "$service_name" {
   datacenters = [
     "factory-us-east-1",
     "dc1" # local development
@@ -11,14 +11,14 @@ job "partkeepr" {
     value     = "worker"
   }
 
-  group "partkeepr" {
+  group "$service_name" {
     count = $count
 
     update {
       max_parallel = 1
     }
 
-    task "partkeepr" {
+    task "$service_name" {
       driver = "docker"
 
       config {
@@ -37,7 +37,7 @@ job "partkeepr" {
         }
 
         labels {
-          gelf_service_name="partkeepr"
+          gelf_service_name="$service_name"
         }
 
       }
