@@ -7,6 +7,9 @@ mkparameters > $PARAMETERS_FILE
 chown -R www-data:www-data /var/www/html/app
 chown -R www-data:www-data /var/www/html/web
 
+# Set up initial stuff that `/setup` would normally do, but because this is done immutably
+# it's not around on the next container run.
+# ref https://github.com/partkeepr/PartKeepr/blob/7dd3ef8f2395097b3659bbe0587eac70b6ff7671/src/PartKeepr/SetupBundle/Controller/CacheWarmupSetupController.php
 php app/console cache:warmup --env=prod
 php app/console nfq:sprite:generate
 php app/console assets:install
