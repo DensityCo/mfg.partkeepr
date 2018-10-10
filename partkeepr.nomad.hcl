@@ -64,6 +64,20 @@ job "partkeepr" {
           timeout  = "9s"
         }
       }
+
+      template {
+        data = <<EOH
+        PARTKEEPR_DATABASE_HOST="{{ key "$service_name/partkeepr_database_host" }}"
+        PARTKEEPR_DATABASE_NAME="{{ key "$service_name/partkeepr_database_name" }}"
+        PARTKEEPR_DATABASE_PORT="{{ key "$service_name/partkeepr_database_port" }}"
+        PARTKEEPR_DATABASE_USER="{{ key "$service_name/partkeepr_database_user" }}"
+        PARTKEEPR_DATABASE_PASS="{{ key "$service_name/partkeepr_database_pass" }}"
+        PARTKEEPR_OKTOPART_APIKEY="{{ key "partkeepr-staging/partkeepr_oktopart_apikey" }}"
+        EOH
+        destination = "secrets/.env"
+        env = true
+        splay = "5s"
+      }
     }
   }
 }

@@ -78,11 +78,26 @@ deploy-production: deploy/production
 # endef
 # export NGINX_STAGING_BUILD_TLD
 
-# deploy/lab/consul-keys:
-# 	density ssh --pick-first \
-# 		--exec "consul kv put -base64 nginx/http_configs/partkeepr-staging $$(echo $$NGINX_STAGING_BUILD_TLD | base64)" \
-# 		lab-us-east-1-cluster-worker
-# deploy-lab-env: deploy/lab/consul-keys
+deploy/lab/consul-keys:
+	density ssh --pick-first \
+		--exec "consul kv put partkeepr-staging/partkeepr_database_host $(PARTKEEPR_DATABASE_HOST)" \
+		factory-us-east-1-cluster-worker
+	density ssh --pick-first \
+		--exec "consul kv put partkeepr-staging/partkeepr_database_name $(PARTKEEPR_DATABASE_NAME)" \
+		factory-us-east-1-cluster-worker
+	density ssh --pick-first \
+		--exec "consul kv put partkeepr-staging/partkeepr_database_port $(PARTKEEPR_DATABASE_PORT)" \
+		factory-us-east-1-cluster-worker
+	density ssh --pick-first \
+		--exec "consul kv put partkeepr-staging/partkeepr_database_user $(PARTKEEPR_DATABASE_USER)" \
+		factory-us-east-1-cluster-worker
+	density ssh --pick-first \
+		--exec "consul kv put partkeepr-staging/partkeepr_database_pass $(PARTKEEPR_DATABASE_PASS)" \
+		factory-us-east-1-cluster-worker
+	density ssh --pick-first \
+		--exec "consul kv put partkeepr-staging/partkeepr_oktopart_apikey $(PARTKEEPR_OKTOPART_APIKEY)" \
+		factory-us-east-1-cluster-worker
+deploy-lab-env: deploy/lab/consul-keys
 #
 # teardown-lab-env:
 # 	density ssh --pick-first \
