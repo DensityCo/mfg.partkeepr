@@ -1,0 +1,21 @@
+#!/bin/sh
+set -e
+
+PARAMETERS_FILE='/var/www/html/app/config/parameters.php'
+
+mkparameters > $PARAMETERS_FILE
+chown -R www-data:www-data /var/www/html/app
+chown -R www-data:www-data /var/www/html/web
+
+php app/console cache:warmup --env=prod
+php app/console nfq:sprite:generate
+php app/console assets:install
+php app/console generate:extjs:entities
+php app/console assetic:dump
+
+# first arg is `-f` or `--some-option`
+if [ "${1#-}" != "$1" ]; then
+	set -- apache2-foreground "$@"
+fi
+
+exec "$@"
