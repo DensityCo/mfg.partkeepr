@@ -1,3 +1,3 @@
 FROM mhubig/partkeepr
 
-COPY docker-php-entrypoint /usr/local/bin/
+COPY mkparameters parameters.template docker-php-entrypoint /usr/local/bin/

@@ -65,6 +65,15 @@ deploy/staging/consul-keys:
 	density ssh --pick-first \
 		--exec "consul kv put partkeepr-staging/partkeepr_oktopart_apikey $(PARTKEEPR_OKTOPART_APIKEY)" \
 		factory-us-east-1-cluster-worker
+	density ssh --pick-first \
+		--exec "consul kv put partkeepr-staging/partkeepr_secret $(PARTKEEPR_SECRET)" \
+		factory-us-east-1-cluster-worker
+	density ssh --pick-first \
+		--exec "consul kv put partkeepr-staging/partkeepr_username $(PARTKEEPR_USERNAME)" \
+		factory-us-east-1-cluster-worker
+	density ssh --pick-first \
+		--exec "consul kv put partkeepr-staging/partkeepr_password $(PARTKEEPR_PASSWORD)" \
+		factory-us-east-1-cluster-worker
 deploy-staging-env: deploy/staging/consul-keys
 
 deploy/production:
@@ -94,6 +103,15 @@ deploy/production/consul-keys:
 		factory-us-east-1-cluster-worker
 	density ssh --pick-first \
 		--exec "consul kv put partkeepr/partkeepr_oktopart_apikey $(PARTKEEPR_OKTOPART_APIKEY)" \
+		factory-us-east-1-cluster-worker
+	density ssh --pick-first \
+		--exec "consul kv put partkeepr/partkeepr_secret $(PARTKEEPR_SECRET)" \
+		factory-us-east-1-cluster-worker
+	density ssh --pick-first \
+		--exec "consul kv put partkeepr/partkeepr_username $(PARTKEEPR_USERNAME)" \
+		factory-us-east-1-cluster-worker
+	density ssh --pick-first \
+		--exec "consul kv put partkeepr/partkeepr_password $(PARTKEEPR_PASSWORD)" \
 		factory-us-east-1-cluster-worker
 deploy-production-env: deploy/production/consul-keys
 

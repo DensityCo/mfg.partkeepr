@@ -73,6 +73,9 @@ job "$service_name" {
         PARTKEEPR_DATABASE_USER="{{ key "$service_name/partkeepr_database_user" }}"
         PARTKEEPR_DATABASE_PASS="{{ key "$service_name/partkeepr_database_pass" }}"
         PARTKEEPR_OKTOPART_APIKEY="{{ key "$service_name/partkeepr_oktopart_apikey" }}"
+        PARTKEEPR_SECRET="{{ key "$service_name/partkeepr_secret" }}"
+        PARTKEEPR_USERNAME="{{ key "$service_name/partkeepr_username" }}"
+        PARTKEEPR_PASSWORD="{{ key "$service_name/partkeepr_password" }}"
         EOH
         destination = "secrets/.env"
         env = true
