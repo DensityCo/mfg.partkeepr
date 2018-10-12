@@ -43,13 +43,13 @@ job "$service_name" {
           "--pass-host-header=false",
         ]
 
-        logging {
-          type = "json-file"
-          config {
-            max-size = "100m"
-            max-file = 3
-          }
-        }
+        # logging {
+        #  type = "json-file"
+        #  config {
+        #    max-size = "100m"
+        #    max-file = 3
+        #  }
+        #}
 
         labels {
           gelf_service_name="$service_name"
