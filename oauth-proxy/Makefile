@@ -42,7 +42,7 @@ deploy/staging:
 	TEMPLATE=./oauth-proxy.nomad.hcl \
 	SERVICE_NAME=inventory-staging \
 	UPSTREAM=https://partkeepr-staging.density.build \
-	DOCKER_IMAGE="$(namespace)/$(image_oauth_proxy):$(tag)" \
+	DOCKER_IMAGE="$(namespace)/$(image):$(tag)" \
   COUNT=1 \
 	../.circleci/send.sh
 deploy-staging: deploy/staging

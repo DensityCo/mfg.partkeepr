@@ -6,7 +6,6 @@ SERVICE_NAME=${SERVICE_NAME:-partkeepr}
 BUILD_URL=${CIRCLE_BUILD_URL:-}
 COUNT=${COUNT:-1}
 DOCKER_IMAGE="${DOCKER_IMAGE:-density/partkeepr:0}"
-DOCKER_IMAGE_OAUTH="${DOCKER_IMAGE:-density/oauth-partkeepr:0}"
 UPSTREAM="${UPSTREAM:-https://partkeepr.density.build}"
  
 msg_id=$(uuidgen)
@@ -26,7 +25,6 @@ MSG=$(cat <<EOF
     "variables": {
       "count": "$COUNT",
       "docker_image": "$DOCKER_IMAGE",
-      "docker_image_oauth": "$DOCKER_IMAGE_OAUTH",
       "service_name": "$SERVICE_NAME",
       "upstream": "$UPSTREAM"
     },
