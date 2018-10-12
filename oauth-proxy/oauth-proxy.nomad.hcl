@@ -85,7 +85,7 @@ job "$service_name" {
         OAUTH2_PROXY_CLIENT_ID="{{ key "$service_name/oauth2_proxy_client_id" }}"
         OAUTH2_PROXY_CLIENT_SECRET="{{ key "$service_name/oauth2_proxy_client_secret" }}"
         OAUTH2_PROXY_COOKIE_DOMAIN="{{ key "$service_name/oauth2_proxy_cookie_domain" }}"
-        OAUTH2_PROXY_COOKIE_SECRET="{{ key "service_name/oauth2_proxy_cookie_secret" }}"
+        OAUTH2_PROXY_COOKIE_SECRET="{{ key "$service_name/oauth2_proxy_cookie_secret" }}"
         OAUTH2_PROXY_EMAIL_DOMAIN="density.io"
         EOH
         destination = "secrets/.env"

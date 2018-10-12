@@ -49,16 +49,16 @@ deploy-staging: deploy/staging
 
 deploy/staging/consul-keys:
 	density ssh --pick-first \
-		--exec "consul kv put oauth-partkeepr-staging/oauth2_proxy_client_id $(OAUTH2_PROXY_CLIENT_ID)" \
+		--exec "consul kv put inventory-staging/oauth2_proxy_client_id $(OAUTH2_PROXY_CLIENT_ID)" \
 		factory-us-east-1-cluster-worker
 	density ssh --pick-first \
-		--exec "consul kv put oauth-partkeepr-staging/oauth2_proxy_client_secret $(OAUTH2_PROXY_CLIENT_SECRET)" \
+		--exec "consul kv put inventory-staging/oauth2_proxy_client_secret $(OAUTH2_PROXY_CLIENT_SECRET)" \
 		factory-us-east-1-cluster-worker
 	density ssh --pick-first \
-		--exec "consul kv put oauth-partkeepr-staging/oauth2_proxy_cookie_domain $(OAUTH2_PROXY_COOKIE_DOMAIN)" \
+		--exec "consul kv put inventory-staging/oauth2_proxy_cookie_domain $(OAUTH2_PROXY_COOKIE_DOMAIN)" \
 		factory-us-east-1-cluster-worker
 	density ssh --pick-first \
-		--exec "consul kv put oauth-partkeepr-staging/oauth2_proxy_cookie_secret $(OAUTH2_PROXY_COOKIE_SECRET)" \
+		--exec "consul kv put inventory-staging/oauth2_proxy_cookie_secret $(OAUTH2_PROXY_COOKIE_SECRET)" \
 		factory-us-east-1-cluster-worker
 deploy-staging-env: deploy/staging/consul-keys
 
