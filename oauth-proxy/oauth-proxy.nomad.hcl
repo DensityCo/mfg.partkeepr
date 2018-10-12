@@ -58,8 +58,8 @@ job "$service_name" {
       }
 
       resources {
-        cpu = 512   # CPU share
-        memory = 512 # MB
+        cpu = 256   # CPU share
+        memory = 256 # MB
         network { port "http" {} }
       }
 
