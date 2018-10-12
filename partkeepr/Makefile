@@ -5,8 +5,7 @@ SHELL := /bin/bash
 
 namespace := 937369328181.dkr.ecr.us-east-1.amazonaws.com
 tag := $(shell git rev-parse --short HEAD)
-image_partkeepr := density/partkeepr
-image_oauth_proxy := density/partkeepr-oauth-proxy
+image := density/partkeepr
 
 .PHONY: dev test test-ci build tag push deploy/lab deploy-lab deploy/lab/consul-keys deploy-lab-env deploy/staging deploy-staging deploy/staging/consul-keys deploy-staging-env deploy/production deploy-production deploy/production/consul-keys deploy-production-env
 
@@ -20,20 +19,17 @@ dev:
 
 ## builds partkeepr container
 build:
-	time docker build -t "$(image_partkeepr):0" .
-	time docker build -f Dockerfile.oauth-proxy -t "$(image_oauth_proxy):0" .
+	time docker build -t "$(image):0" .
 
 ## tags the partkeepr container; 'make tag tag=5'
 tag:
 	$(call check_var, tag, required to tag the image)
-	docker tag "$(image_partkeepr):0" "$(namespace)/$(image_partkeepr):$(tag)"
-	docker tag "$(image_oauth_proxy):0" "$(namespace)/$(image_oauth_proxy):$(tag)"
+	docker tag "$(image):0" "$(namespace)/$(image):$(tag)"
 
 ## push the partkeepr container to the ECS registry; 'make push tag=5'
 push:
 	$(call check_var, tag, required to push to production)
-	docker push "$(namespace)/$(image_partkeepr):$(tag)"
-	docker push "$(namespace)/$(image_oauth_proxy):$(tag)"
+	docker push "$(namespace)/$(image):$(tag)"
 
 
 # ----------------------------------------------------------
@@ -42,17 +38,10 @@ push:
 ## render the Nomad job and deploy to lab
 deploy/staging:
 	$(call check_var, tag, required to render this template)
-	# ENVIRON=factory-us-east-1 \
-	# TEMPLATE=./partkeepr.nomad.hcl \
-	# SERVICE_NAME=partkeepr-staging \
-	# DOCKER_IMAGE="$(namespace)/$(image_partkeepr):$(tag)" \
-  # COUNT=1 \
-	# .circleci/send.sh
 	ENVIRON=factory-us-east-1 \
-	TEMPLATE=./oauth-proxy.nomad.hcl \
-	SERVICE_NAME=oauth-partkeepr-staging \
-	UPSTREAM=partkeepr-staging.density.build \
-	DOCKER_IMAGE="$(namespace)/$(image_oauth_proxy):$(tag)" \
+	TEMPLATE=./partkeepr.nomad.hcl \
+	SERVICE_NAME=partkeepr-staging \
+	DOCKER_IMAGE="$(namespace)/$(image_partkeepr):$(tag)" \
   COUNT=1 \
 	.circleci/send.sh
 deploy-staging: deploy/staging
