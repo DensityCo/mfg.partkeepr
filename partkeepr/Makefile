@@ -41,9 +41,9 @@ deploy/staging:
 	ENVIRON=factory-us-east-1 \
 	TEMPLATE=./partkeepr.nomad.hcl \
 	SERVICE_NAME=partkeepr-staging \
-	DOCKER_IMAGE="$(namespace)/$(image_partkeepr):$(tag)" \
+	DOCKER_IMAGE="$(namespace)/$(imag):$(tag)" \
   COUNT=1 \
-	.circleci/send.sh
+	../.circleci/send.sh
 deploy-staging: deploy/staging
 
 deploy/staging/consul-keys:
