@@ -55,7 +55,7 @@ job "$service_name" {
       service {
         name = "$service_name"
         port = "http"
-        tags = ["public"]
+        # tags = ["public"]
         check {
           type     = "http"
           port     = "http"
